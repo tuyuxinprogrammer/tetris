@@ -195,8 +195,11 @@ canvas#next {
   color: #ddd;
 }
 
-/* Mobile touch controls - hidden by default */
-.touch-controls {
+/* Mobile touch controls - hidden by default (desktop) */
+.touch-controls,
+.mobile-stats,
+.mobile-next,
+.mobile-pause-top {
   display: none;
 }
 
@@ -255,9 +258,9 @@ canvas#next {
 
   /* Stats bar overlaid on top of board */
   .mobile-stats {
+    display: flex;
     position: absolute;
     top: 0; left: 0; right: 0;
-    display: flex;
     justify-content: space-between;
     padding: 6px 8px;
     pointer-events: none;
@@ -291,6 +294,7 @@ canvas#next {
 
   /* Next piece mini preview overlaid on board */
   .mobile-next {
+    display: block;
     position: absolute;
     top: 48px; right: 6px;
     background: rgba(10,10,22,0.8);
@@ -318,6 +322,7 @@ canvas#next {
 
   /* Pause button overlaid top-right */
   .mobile-pause-top {
+    display: flex;
     position: absolute;
     top: 6px; right: 6px;
     width: 26px; height: 26px;
