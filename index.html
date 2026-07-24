@@ -164,135 +164,250 @@ canvas#next {
   color: #fff;
 }
 
-/* Mobile touch controls */
+/* Mobile touch controls - hidden by default */
 .touch-controls {
   display: none;
 }
 
-.touch-controls .dpad {
-  display: grid;
-  grid-template-columns: 70px 70px 70px;
-  grid-template-rows: 70px 70px 70px;
-  gap: 6px;
-  justify-content: center;
-}
+.mobile-header { display: none; }
 
-.touch-btn {
-  background: #16213e;
-  border: 2px solid #4a4a8a;
-  border-radius: 10px;
-  color: #ccc;
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.1s;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  position: relative;
-}
-
-.touch-btn:active {
-  background: #2f3f6e;
-  border-color: #8a8abf;
-  color: #fff;
-  transform: scale(0.93);
-}
-
-.touch-btn svg {
-  width: 28px;
-  height: 28px;
-  fill: currentColor;
-  pointer-events: none;
-}
-
-.btn-left  { grid-column: 1; grid-row: 2; }
-.btn-down  { grid-column: 2; grid-row: 2; }
-.btn-right { grid-column: 3; grid-row: 2; }
-.btn-rotate { grid-column: 1; grid-row: 1; }
-.btn-drop   { grid-column: 3; grid-row: 1; }
-.btn-pause-mobile { grid-column: 2; grid-row: 3; font-size: 14px; font-weight: bold; }
-
-.mobile-header {
-  display: none;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 8px;
-}
-
-.mobile-header .mini-stat {
-  text-align: center;
-}
-
-.mobile-header .mini-stat .label {
-  color: #8a8abf;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.mobile-header .mini-stat .val {
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* Responsive: mobile layout */
-@media (max-width: 650px), (max-height: 700px) {
+/* === Mobile responsive layout === */
+@media (max-width: 650px), (pointer: coarse) and (max-width: 1024px) {
   body {
-    align-items: flex-start;
-    padding-top: 5px;
-    overflow-y: auto;
+    align-items: stretch;
+    padding: 0;
+    background: #0a0a16;
   }
 
   .container {
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-  }
-
-  .side-panel {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    min-width: auto;
-  }
-
-  .side-panel .panel-box {
+    gap: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
     padding: 6px 10px;
-    border-radius: 6px;
+    justify-content: space-between;
   }
 
-  .side-panel .panel-box h3 {
-    font-size: 10px;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
+  /* Hide desktop sidebar entirely */
+  .side-panel { display: none; }
+
+  .game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex: 1;
+    justify-content: center;
+    gap: 0;
   }
 
-  .score-value { font-size: 20px; }
-  .level-value, .lines-value { font-size: 16px; }
-
-  .side-panel .panel-box:last-child,
-  .side-panel .bottom-buttons {
-    display: none;
+  /* Board container with stats overlay */
+  .board-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    flex-shrink: 1;
   }
 
   canvas#board {
-    max-width: 100vw;
+    display: block;
+    width: 100%;
+    height: auto;
     max-height: 55vh;
     max-height: 55dvh;
+    border: 1px solid #2a2a5a;
+    border-radius: 6px;
+    box-shadow: 0 0 30px rgba(60,60,160,0.15), inset 0 0 30px rgba(0,0,0,0.3);
   }
 
-  canvas#next {
-    width: 80px !important;
-    height: 80px !important;
+  /* Stats bar overlaid on top of board */
+  .mobile-stats {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(to bottom, rgba(10,10,22,0.9), transparent);
+    border-radius: 6px 6px 0 0;
   }
 
-  .touch-controls {
+  .mobile-stats .stat-item {
+    text-align: center;
+    min-width: 50px;
+  }
+
+  .mobile-stats .stat-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+
+  .mobile-stats .stat-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .mobile-stats .stat-val.lvl { color: #e94560; }
+  .mobile-stats .stat-val.lns { color: #5a9fd4; }
+
+  /* Next piece mini preview overlaid on board */
+  .mobile-next {
+    position: absolute;
+    top: 48px; right: 6px;
+    background: rgba(10,10,22,0.8);
+    border: 1px solid #2a2a5a;
+    border-radius: 6px;
+    padding: 3px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .mobile-next canvas {
     display: block;
-    margin-top: 4px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .mobile-next .next-label {
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: -2px;
+  }
+
+  /* Pause button overlaid top-right */
+  .mobile-pause-top {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 26px; height: 26px;
+    background: rgba(10,10,22,0.7);
+    border: 1px solid #3a3a6a;
+    border-radius: 50%;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-pause-top:active {
+    background: rgba(60,60,100,0.8);
+    color: #fff;
+  }
+
+  /* === Beautiful D-Pad === */
+  .touch-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0 12px 0;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .dpad {
+    display: grid;
+    grid-template-columns: 70px 70px 70px;
+    grid-template-rows: 70px 70px;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .touch-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, #1a1e35 0%, #101428 100%);
+    border: 1.5px solid #2e2e54;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: transform 0.08s, box-shadow 0.08s, border-color 0.08s;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+    position: relative;
+  }
+
+  .touch-btn::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.08s;
+    pointer-events: none;
+  }
+
+  .touch-btn:active, .touch-btn.pressed {
+    transform: scale(0.88);
+    border-color: #6a6abf;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5),
+                0 0 24px rgba(90,90,200,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.06);
+    color: #fff;
+  }
+
+  .touch-btn:active::after, .touch-btn.pressed::after {
+    opacity: 1;
+    box-shadow: inset 0 0 12px rgba(100,100,200,0.15);
+  }
+
+  .touch-btn svg {
+    width: 30px;
+    height: 30px;
+    fill: currentColor;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .touch-btn:active svg, .touch-btn.pressed svg {
+    opacity: 1;
+  }
+
+  .btn-left  { grid-column: 1; grid-row: 2; }
+  .btn-down  { grid-column: 2; grid-row: 2; }
+  .btn-right { grid-column: 3; grid-row: 2; }
+
+  /* Action buttons - slightly smaller, above d-pad */
+  .btn-rotate {
+    grid-column: 1; grid-row: 1;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    align-self: center; justify-self: end;
+    margin-right: 2px;
+  }
+
+  .btn-drop {
+    grid-column: 3; grid-row: 1;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    align-self: center; justify-self: start;
+    margin-left: 2px;
+  }
+
+  .btn-rotate svg, .btn-drop svg {
+    width: 26px; height: 26px;
+  }
+
+  .btn-pause-mobile {
+    display: none; /* moved to top overlay */
   }
 }
 </style>
@@ -301,10 +416,24 @@ canvas#next {
 
 <div class="container">
   <div class="game-area">
-    <canvas id="board"></canvas>
-    <div class="game-over-overlay" id="overlay">
-      <h2>游戏结束</h2>
-      <button onclick="restart()">重新开始</button>
+    <div class="board-wrapper">
+      <canvas id="board"></canvas>
+      <div class="mobile-stats" id="mobileStats">
+        <div class="stat-item"><div class="stat-label">得分</div><div class="stat-val" id="mScore">0</div></div>
+        <div class="stat-item"><div class="stat-label">等级</div><div class="stat-val lvl" id="mLevel">1</div></div>
+        <div class="stat-item"><div class="stat-label">行数</div><div class="stat-val lns" id="mLines">0</div></div>
+      </div>
+      <div class="mobile-next">
+        <div class="next-label">NEXT</div>
+        <canvas id="nextMobile"></canvas>
+      </div>
+      <div class="mobile-pause-top" id="btnPauseTop" title="暂停">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </div>
+      <div class="game-over-overlay" id="overlay">
+        <h2>游戏结束</h2>
+        <button onclick="restart()">重新开始</button>
+      </div>
     </div>
     <div class="touch-controls" id="touchControls">
       <div class="dpad">
@@ -389,7 +518,7 @@ const SHAPES = {
 
 const PIECE_NAMES = ['I','O','T','S','Z','J','L'];
 
-let board, canvas, ctx, nextCanvas, nextCtx;
+let board, canvas, ctx, nextCanvas, nextCtx, nextMobileCanvas, nextMobileCtx;
 let current, nextPiece;
 let score, level, lines;
 let gameRunning, paused;
@@ -405,6 +534,11 @@ nextCanvas = document.getElementById('next');
 nextCtx = nextCanvas.getContext('2d');
 nextCanvas.width = 4 * BLOCK;
 nextCanvas.height = 4 * BLOCK;
+
+nextMobileCanvas = document.getElementById('nextMobile');
+nextMobileCtx = nextMobileCanvas.getContext('2d');
+nextMobileCanvas.width = 4 * BLOCK;
+nextMobileCanvas.height = 4 * BLOCK;
 
 function createBoard() {
   return Array.from({length: ROWS}, () => Array(COLS).fill(0));
@@ -576,17 +710,23 @@ function drawBoard() {
   }
 }
 
-function drawNext() {
-  nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-  if (!nextPiece) return;
-  const shape = nextPiece.shape;
+function drawNextPiece(ctx, canvas, shape) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!shape) return;
   const size = BLOCK;
-  const offsetX = (nextCanvas.width - shape[0].length * size) / 2;
-  const offsetY = (nextCanvas.height - shape.length * size) / 2;
+  const offsetX = (canvas.width - shape[0].length * size) / 2;
+  const offsetY = (canvas.height - shape.length * size) / 2;
   for (let r = 0; r < shape.length; r++) {
     for (let c = 0; c < shape[r].length; c++) {
-      if (shape[r][c]) drawBlock(nextCtx, shape[r][c], offsetX + c * size, offsetY + r * size, size);
+      if (shape[r][c]) drawBlock(ctx, shape[r][c], offsetX + c * size, offsetY + r * size, size);
     }
+  }
+}
+
+function drawNext() {
+  if (nextPiece) {
+    drawNextPiece(nextCtx, nextCanvas, nextPiece.shape);
+    drawNextPiece(nextMobileCtx, nextMobileCanvas, nextPiece.shape);
   }
 }
 
@@ -594,6 +734,12 @@ function updateUI() {
   document.getElementById('score').textContent = score;
   document.getElementById('level').textContent = level;
   document.getElementById('lines').textContent = lines;
+  const mScore = document.getElementById('mScore');
+  const mLevel = document.getElementById('mLevel');
+  const mLines = document.getElementById('mLines');
+  if (mScore) mScore.textContent = score;
+  if (mLevel) mLevel.textContent = level;
+  if (mLines) mLines.textContent = lines;
 }
 
 function gameLoop(timestamp) {
@@ -734,7 +880,7 @@ document.getElementById('btnPauseMobile').addEventListener('mousedown', e => {
   e.preventDefault(); togglePause();
 });
 
-// Update both pause buttons
+// Update all pause buttons
 const origTogglePause = togglePause;
 togglePause = function() {
   origTogglePause();
@@ -742,7 +888,16 @@ togglePause = function() {
   document.getElementById('pauseBtn').textContent = txt;
   const mobileBtn = document.getElementById('btnPauseMobile');
   if (mobileBtn) mobileBtn.textContent = txt;
+  const topBtn = document.getElementById('btnPauseTop');
+  if (topBtn) {
+    topBtn.innerHTML = paused
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+  }
 };
+
+document.getElementById('btnPauseTop').addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); togglePause(); });
+document.getElementById('btnPauseTop').addEventListener('mousedown', e => { e.preventDefault(); e.stopPropagation(); togglePause(); });
 
 start();
 </script>
